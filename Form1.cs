@@ -1,4 +1,5 @@
 
+using Newtonsoft.Json;
 using SharpDX.DirectInput;
 using System.Runtime.InteropServices;
 
@@ -21,10 +22,16 @@ namespace MousePos
 
         private Joystick joystick;
 
+        private const string configurationFile = "config.json";
+
+        private JsonSerializer serializer = new JsonSerializer();
+
         public Form1()
         {
             InitializeComponent();
-
+            LoadPosition(out int X, out int Y);
+            mousePos.X = X;
+            mousePos.Y = Y;
         }
 
         private AutoResetEvent are = new AutoResetEvent(false);
@@ -42,6 +49,7 @@ namespace MousePos
                         mousePos.X = MousePosition.X;
                         mousePos.Y = MousePosition.Y;
                         Invoke(new MethodInvoker(() => notifyIcon1.Text = $"({mousePos.X}, {mousePos.Y})"));
+                        SavePosition(mousePos.X, mousePos.Y);
                         teaching = false;
                         this.Invoke(new MethodInvoker(() => teachToolStripMenuItem1.Checked = false ));
                     }
@@ -90,15 +98,58 @@ namespace MousePos
             StartWaitingForClickFromOutside();
         }
 
-        private void teachToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void TeachToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.Hand;
             teaching = true;
+        }
+
+        private void SavePosition(int X, int Y)
+        {
+            using StreamWriter sw = new StreamWriter(configurationFile);
+            using JsonWriter writer = new JsonTextWriter(sw);
+            serializer.Serialize(writer, new MousePosition { X = X, Y = Y });
+        }
+
+        private bool LoadPosition(out int X, out int Y)
+        {
+            if (File.Exists(configurationFile))
+            {
+                using (StreamReader file = File.OpenText(configurationFile))
+                {
+                    MousePosition? point = serializer.Deserialize(file, typeof(MousePosition)) as MousePosition;
+                    if (point != null)
+                    {
+                        X = point.X;
+                        Y = point.Y;
+                        return true;
+                    }
+                    else
+                    {
+                        X = 0;
+                        Y = 0;
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                X = 0;
+                Y = 0;
+                return false;
+            }
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
+    }
+
+    class MousePosition
+    {
+        public int X { get; set; }
+
+        public int Y { get; set; }
     }
 }

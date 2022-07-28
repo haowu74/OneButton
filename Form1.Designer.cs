@@ -61,7 +61,7 @@
             this.teachToolStripMenuItem1.Name = "teachToolStripMenuItem1";
             this.teachToolStripMenuItem1.Size = new System.Drawing.Size(171, 48);
             this.teachToolStripMenuItem1.Text = "Teach";
-            this.teachToolStripMenuItem1.Click += new System.EventHandler(this.teachToolStripMenuItem1_Click);
+            this.teachToolStripMenuItem1.Click += new System.EventHandler(this.TeachToolStripMenuItem1_Click);
             // 
             // quitToolStripMenuItem
             // 
