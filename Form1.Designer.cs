@@ -33,10 +33,9 @@
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.teachToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.playToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.teachToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,26 +51,24 @@
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.teachToolStripMenuItem1,
-            this.playToolStripMenuItem1,
             this.quitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(361, 203);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(172, 100);
             // 
             // teachToolStripMenuItem1
             // 
             this.teachToolStripMenuItem1.CheckOnClick = true;
             this.teachToolStripMenuItem1.Name = "teachToolStripMenuItem1";
-            this.teachToolStripMenuItem1.Size = new System.Drawing.Size(360, 48);
+            this.teachToolStripMenuItem1.Size = new System.Drawing.Size(171, 48);
             this.teachToolStripMenuItem1.Text = "Teach";
             this.teachToolStripMenuItem1.Click += new System.EventHandler(this.teachToolStripMenuItem1_Click);
             // 
-            // playToolStripMenuItem1
+            // quitToolStripMenuItem
             // 
-            this.playToolStripMenuItem1.CheckOnClick = true;
-            this.playToolStripMenuItem1.Name = "playToolStripMenuItem1";
-            this.playToolStripMenuItem1.Size = new System.Drawing.Size(360, 48);
-            this.playToolStripMenuItem1.Text = "Play";
-            this.playToolStripMenuItem1.Click += new System.EventHandler(this.playToolStripMenuItem1_Click);
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(171, 48);
+            this.quitToolStripMenuItem.Text = "Quit";
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
             // teachToolStripMenuItem
             // 
@@ -82,13 +79,6 @@
             // 
             this.playToolStripMenuItem.Name = "playToolStripMenuItem";
             this.playToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
-            // 
-            // quitToolStripMenuItem
-            // 
-            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(360, 48);
-            this.quitToolStripMenuItem.Text = "Quit";
-            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -108,7 +98,6 @@
         private ToolStripMenuItem teachToolStripMenuItem;
         private ToolStripMenuItem playToolStripMenuItem;
         private ToolStripMenuItem teachToolStripMenuItem1;
-        private ToolStripMenuItem playToolStripMenuItem1;
         private ToolStripMenuItem quitToolStripMenuItem;
     }
 }

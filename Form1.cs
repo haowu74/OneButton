@@ -27,20 +27,6 @@ namespace MousePos
 
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            switch (keyData)
-            {
-                case Keys.Q:
-                    SetCursorPos(mousePos.X, mousePos.Y);
-                    break;
-                default:
-                    break;
-            }
-
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
-
         private AutoResetEvent are = new AutoResetEvent(false);
         private void StartWaitingForClickFromOutside()
         {
@@ -51,26 +37,14 @@ namespace MousePos
                 while (true)
                 {
                     if (are.WaitOne(100)) break;
-                    if (MouseButtons == MouseButtons.Middle && teaching)
+                    if (MouseButtons == MouseButtons.Left && teaching)
                     {
                         mousePos.X = MousePosition.X;
                         mousePos.Y = MousePosition.Y;
-                        notifyIcon1.BalloonTipText = $"{mousePos.X}, {mousePos.Y}";
-                        notifyIcon1.Text = $"Teach mode: {mousePos.X}, {mousePos.Y}";
-                        notifyIcon1.ShowBalloonTip(10000);
+                        Invoke(new MethodInvoker(() => notifyIcon1.Text = $"({mousePos.X}, {mousePos.Y})"));
+                        teaching = false;
+                        this.Invoke(new MethodInvoker(() => teachToolStripMenuItem1.Checked = false ));
                     }
-                    else if (MouseButtons == MouseButtons.Middle && !teaching)
-                    {
-                        SetCursorPos(mousePos.X, mousePos.Y);
-                        mouse_event(2, mousePos.X, mousePos.Y, 0, 0);
-                        mouse_event(4, mousePos.X, mousePos.Y, 0, 0);
-                    }
-                    //else if ((GetKeyState(0x12) & 0x8000) != 0)
-                    //{
-                    //    SetCursorPos(mousePos.X, mousePos.Y);
-                    //    mouse_event(2, mousePos.X, mousePos.Y, 0, 0);
-                    //    mouse_event(4, mousePos.X, mousePos.Y, 0, 0);
-                    //}
                     else if (!teaching)
                     {
                         joystick?.Poll();
@@ -105,7 +79,6 @@ namespace MousePos
             // If Joystick not found, throws an error
             if (joystickGuid == Guid.Empty)
             {
-                Console.WriteLine("No joystick/Gamepad found.");
                 Console.ReadKey();
                 Environment.Exit(1);
             }
@@ -119,19 +92,8 @@ namespace MousePos
 
         private void teachToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            playToolStripMenuItem1.Checked = false;
             Cursor.Current = Cursors.Hand;
-            notifyIcon1.Text = "Teach mode";
             teaching = true;
-        }
-
-        private void playToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            teachToolStripMenuItem1.Checked = false;
-            Cursor.Current = Cursors.Default;
-            notifyIcon1.Text = "Play mode";
-            teaching = false;
-            //StartWaitingForKeyboardHitFromOutside();
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
