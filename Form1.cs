@@ -11,12 +11,17 @@ namespace MousePos
         static extern bool SetCursorPos(int X, int Y);
 
         [DllImport("user32.dll")]
+        static extern bool GetCursorPos(out Point point);
+
+        [DllImport("user32.dll")]
         private static extern void mouse_event(int dwFlags, int dx, int dy, int dwData, int dwExtraInfo);
 
         [DllImport("user32.dll")]
         private static extern int GetKeyState(int nVirtKey); 
 
         private Point mousePos;
+
+        private Point oldPos;
 
         private bool teaching;
 
@@ -59,9 +64,15 @@ namespace MousePos
                         var datas = joystick?.GetBufferedData();
                         if (datas != null && datas.Any(d => d.Offset == JoystickOffset.Buttons0 && d.Value == 128))
                         {
+                            GetCursorPos(out Point point);
+                            oldPos = point;
                             SetCursorPos(mousePos.X, mousePos.Y);
                             mouse_event(2, mousePos.X, mousePos.Y, 0, 0);
+                        }
+                        else if (datas != null && datas.Any(d => d.Offset == JoystickOffset.Buttons0 && d.Value == 0))
+                        {
                             mouse_event(4, mousePos.X, mousePos.Y, 0, 0);
+                            SetCursorPos(oldPos.X, oldPos.Y);
                         }
                     }
                 }

@@ -82,9 +82,10 @@
             // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(912, 563);
+            this.ClientSize = new System.Drawing.Size(292, 0);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
