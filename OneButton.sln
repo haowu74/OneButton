@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OneButton", "OneButton.csproj", "{B230BE0D-D549-4A47-907E-970A4459923B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B230BE0D-D549-4A47-907E-970A4459923B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B230BE0D-D549-4A47-907E-970A4459923B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B230BE0D-D549-4A47-907E-970A4459923B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B230BE0D-D549-4A47-907E-970A4459923B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {52512092-E169-452E-B9BA-B2B851F6AAFE}
+	EndGlobalSection
+EndGlobal
