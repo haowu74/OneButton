@@ -17,7 +17,22 @@ namespace MousePos
         private static extern void mouse_event(int dwFlags, int dx, int dy, int dwData, int dwExtraInfo);
 
         [DllImport("user32.dll")]
-        private static extern int GetKeyState(int nVirtKey); 
+        private static extern int GetKeyState(int nVirtKey);
+
+        [DllImport("user32.dll")]
+        private static extern int SetSystemCursor(IntPtr hCursor, uint id);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr LoadCursor(IntPtr hInstance, int lpCursorName);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr SetCursor(IntPtr hCursor);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr CopyIcon(IntPtr pcur);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern Int32 SystemParametersInfo(UInt32 uiAction, UInt32 uiParam, String? pvParam, UInt32 fWinIni);
 
         private Point mousePos;
 
@@ -56,6 +71,7 @@ namespace MousePos
                         Invoke(new MethodInvoker(() => notifyIcon1.Text = $"({mousePos.X}, {mousePos.Y})"));
                         SavePosition(mousePos.X, mousePos.Y);
                         teaching = false;
+                        SystemParametersInfo(0x57, 0, null, 0);
                         this.Invoke(new MethodInvoker(() => teachToolStripMenuItem1.Checked = false ));
                     }
                     else if (!teaching)
@@ -111,8 +127,9 @@ namespace MousePos
 
         private void TeachToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.Hand;
             teaching = true;
+            SetSystemCursor(CopyIcon(LoadCursor(IntPtr.Zero, 32515)), 32512);
+            SetSystemCursor(CopyIcon(LoadCursor(IntPtr.Zero, 32515)), 32513);
         }
 
         private void SavePosition(int X, int Y)
@@ -153,6 +170,7 @@ namespace MousePos
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SystemParametersInfo(0x57, 0, null, 0);
             Application.Exit();
         }
     }
