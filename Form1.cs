@@ -46,6 +46,9 @@ namespace MousePos
 
         private JsonSerializer serializer = new JsonSerializer();
 
+        private IntPtr arrow;
+
+        private IntPtr beam;
         public Form1()
         {
             InitializeComponent();
@@ -71,7 +74,9 @@ namespace MousePos
                         Invoke(new MethodInvoker(() => notifyIcon1.Text = $"({mousePos.X}, {mousePos.Y})"));
                         SavePosition(mousePos.X, mousePos.Y);
                         teaching = false;
-                        SystemParametersInfo(0x57, 0, null, 0);
+                        //SystemParametersInfo(0x57, 0, null, 0);
+                        SetSystemCursor(arrow, 32512);
+                        SetSystemCursor(beam, 32513);
                         this.Invoke(new MethodInvoker(() => teachToolStripMenuItem1.Checked = false ));
                     }
                     else if (!teaching)
@@ -114,8 +119,7 @@ namespace MousePos
             // If Joystick not found, throws an error
             if (joystickGuid == Guid.Empty)
             {
-                Console.ReadKey();
-                Environment.Exit(1);
+                Application.Exit();
             }
             joystick = new Joystick(directInput, joystickGuid);
             joystick.Properties.BufferSize = 128;
@@ -128,6 +132,8 @@ namespace MousePos
         private void TeachToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             teaching = true;
+            arrow = CopyIcon(LoadCursor(IntPtr.Zero, 32512));
+            beam = CopyIcon(LoadCursor(IntPtr.Zero, 32513));
             SetSystemCursor(CopyIcon(LoadCursor(IntPtr.Zero, 32515)), 32512);
             SetSystemCursor(CopyIcon(LoadCursor(IntPtr.Zero, 32515)), 32513);
         }
@@ -170,7 +176,8 @@ namespace MousePos
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SystemParametersInfo(0x57, 0, null, 0);
+            SetSystemCursor(arrow, 32512);
+            SetSystemCursor(beam, 32513);
             Application.Exit();
         }
     }
