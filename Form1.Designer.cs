@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.chooseJoyStickButton = new System.Windows.Forms.ToolStripComboBox();
             this.teachToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.teachToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,23 +51,45 @@
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.chooseJoyStickButton,
             this.teachToolStripMenuItem1,
             this.quitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(172, 100);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(361, 214);
+            // 
+            // chooseJoyStickButton
+            // 
+            this.chooseJoyStickButton.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.chooseJoyStickButton.Items.AddRange(new object[] {
+            "X",
+            "Y",
+            "Z",
+            "Buttons0",
+            "Buttons1",
+            "Buttons2",
+            "Buttons3",
+            "Buttons4",
+            "Buttons5",
+            "Buttons6",
+            "Buttons7",
+            "Buttons8",
+            "Buttons9"});
+            this.chooseJoyStickButton.Name = "chooseJoyStickButton";
+            this.chooseJoyStickButton.Size = new System.Drawing.Size(200, 49);
+            this.chooseJoyStickButton.SelectedIndexChanged += new System.EventHandler(this.chooseJoyStickButton_SelectedIndexChanged);
             // 
             // teachToolStripMenuItem1
             // 
             this.teachToolStripMenuItem1.CheckOnClick = true;
             this.teachToolStripMenuItem1.Name = "teachToolStripMenuItem1";
-            this.teachToolStripMenuItem1.Size = new System.Drawing.Size(171, 48);
+            this.teachToolStripMenuItem1.Size = new System.Drawing.Size(360, 48);
             this.teachToolStripMenuItem1.Text = "Teach";
             this.teachToolStripMenuItem1.Click += new System.EventHandler(this.TeachToolStripMenuItem1_Click);
             // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(171, 48);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(360, 48);
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -100,5 +123,6 @@
         private ToolStripMenuItem playToolStripMenuItem;
         private ToolStripMenuItem teachToolStripMenuItem1;
         private ToolStripMenuItem quitToolStripMenuItem;
+        private ToolStripComboBox chooseJoyStickButton;
     }
 }

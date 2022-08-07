@@ -49,10 +49,13 @@ namespace MousePos
         private IntPtr arrow;
 
         private IntPtr beam;
+
+        private JoystickOffset joystickOffset;
         public Form1()
         {
             InitializeComponent();
-            LoadPosition(out int X, out int Y);
+            LoadPosition(out int X, out int Y, out joystickOffset);
+            chooseJoyStickButton.SelectedIndex = chooseJoyStickButton.Items.IndexOf(joystickOffset.ToString());
             mousePos.X = X;
             mousePos.Y = Y;
         }
@@ -83,14 +86,14 @@ namespace MousePos
                     {
                         joystick?.Poll();
                         var datas = joystick?.GetBufferedData();
-                        if (datas != null && datas.Any(d => d.Offset == JoystickOffset.Buttons0 && d.Value == 128))
+                        if (datas != null && datas.Any(d => d.Offset == joystickOffset && d.Value == 128))
                         {
                             GetCursorPos(out Point point);
                             oldPos = point;
                             SetCursorPos(mousePos.X, mousePos.Y);
                             mouse_event(2, mousePos.X, mousePos.Y, 0, 0);
                         }
-                        else if (datas != null && datas.Any(d => d.Offset == JoystickOffset.Buttons0 && d.Value == 0))
+                        else if (datas != null && datas.Any(d => d.Offset == joystickOffset && d.Value == 0))
                         {
                             mouse_event(4, mousePos.X, mousePos.Y, 0, 0);
                             SetCursorPos(oldPos.X, oldPos.Y);
@@ -116,7 +119,7 @@ namespace MousePos
                 foreach (var deviceInstance in directInput.GetDevices(DeviceType.Joystick,
                         DeviceEnumerationFlags.AllDevices))
                     joystickGuid = deviceInstance.InstanceGuid;
-            // If Joystick not found, throws an error
+            // If Joystick not found, exit the application
             if (joystickGuid == Guid.Empty)
             {
                 Application.Exit();
@@ -142,10 +145,10 @@ namespace MousePos
         {
             using StreamWriter sw = new StreamWriter(configurationFile);
             using JsonWriter writer = new JsonTextWriter(sw);
-            serializer.Serialize(writer, new MousePosition { X = X, Y = Y });
+            serializer.Serialize(writer, new MousePosition { X = X, Y = Y, JoyStickButton = joystickOffset.ToString() });
         }
 
-        private bool LoadPosition(out int X, out int Y)
+        private bool LoadPosition(out int X, out int Y, out JoystickOffset joystickOffset)
         {
             if (File.Exists(configurationFile))
             {
@@ -156,12 +159,22 @@ namespace MousePos
                     {
                         X = point.X;
                         Y = point.Y;
+                        joystickOffset = JoystickOffset.X;
+                        try
+                        {
+                            Enum.TryParse(point.JoyStickButton, out joystickOffset);
+                        }
+                        catch(ArgumentException)
+                        {
+                            Application.Exit();
+                        }
                         return true;
                     }
                     else
                     {
                         X = 0;
                         Y = 0;
+                        joystickOffset = JoystickOffset.X;
                         return false;
                     }
                 }
@@ -170,6 +183,7 @@ namespace MousePos
             {
                 X = 0;
                 Y = 0;
+                joystickOffset = JoystickOffset.X;
                 return false;
             }
         }
@@ -180,6 +194,19 @@ namespace MousePos
             SetSystemCursor(beam, 32513);
             Application.Exit();
         }
+
+        private void chooseJoyStickButton_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selected = ((ToolStripComboBox)sender).SelectedItem.ToString();
+            try
+            {
+                Enum.TryParse(selected, out joystickOffset);
+            }
+            catch (ArgumentException)
+            {
+                Application.Exit();
+            }
+        }
     }
 
     class MousePosition
@@ -187,5 +214,7 @@ namespace MousePos
         public int X { get; set; }
 
         public int Y { get; set; }
+
+        public string? JoyStickButton { get; set; }
     }
 }
