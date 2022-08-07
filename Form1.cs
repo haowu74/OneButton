@@ -42,7 +42,7 @@ namespace MousePos
 
         private Joystick joystick;
 
-        private const string configurationFile = "config.json";
+        private string configurationFile = "";
 
         private JsonSerializer serializer = new JsonSerializer();
 
@@ -54,6 +54,9 @@ namespace MousePos
         public Form1()
         {
             InitializeComponent();
+            var homePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            configurationFile = Path.Combine(homePath, "AutomativeDiag\\config.json");
+            Directory.CreateDirectory(Path.Combine(homePath, "AutomativeDiag"));
             LoadPosition(out int X, out int Y, out joystickOffset);
             chooseJoyStickButton.SelectedIndex = chooseJoyStickButton.Items.IndexOf(joystickOffset.ToString());
             mousePos.X = X;
@@ -69,7 +72,8 @@ namespace MousePos
             {
                 while (true)
                 {
-                    if (are.WaitOne(100)) break;
+                    //if (are.WaitOne(100)) break;
+                    Thread.Sleep(100);
                     if (MouseButtons == MouseButtons.Left && teaching)
                     {
                         mousePos.X = MousePosition.X;
@@ -77,7 +81,6 @@ namespace MousePos
                         Invoke(new MethodInvoker(() => notifyIcon1.Text = $"({mousePos.X}, {mousePos.Y})"));
                         SavePosition(mousePos.X, mousePos.Y);
                         teaching = false;
-                        //SystemParametersInfo(0x57, 0, null, 0);
                         SetSystemCursor(arrow, 32512);
                         SetSystemCursor(beam, 32513);
                         this.Invoke(new MethodInvoker(() => teachToolStripMenuItem1.Checked = false ));
