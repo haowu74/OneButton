@@ -111,14 +111,6 @@ namespace MousePos
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
-        }
-
-        private void Minimize()
-        {
-            this.ShowInTaskbar = false;
-            notifyIcon1.Visible = true;
-            this.WindowState = FormWindowState.Minimized;
             var directInput = new DirectInput();
             var joystickGuid = Guid.Empty;
             foreach (var deviceInstance in directInput.GetDevices(DeviceType.Gamepad,
@@ -141,6 +133,13 @@ namespace MousePos
             // Acquire the joystick
             joystick.Acquire();
             StartWaitingForClickFromOutside();
+        }
+
+        private void Minimize()
+        {
+            this.ShowInTaskbar = false;
+            notifyIcon1.Visible = true;
+            this.WindowState = FormWindowState.Minimized;
         }
 
         private void TeachToolStripMenuItem1_Click(object sender, EventArgs e)
