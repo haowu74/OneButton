@@ -37,7 +37,10 @@
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.teachToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.splashTimer = new System.Windows.Forms.Timer(this.components);
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -55,7 +58,7 @@
             this.teachToolStripMenuItem1,
             this.quitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(361, 214);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(261, 84);
             // 
             // chooseJoyStickButton
             // 
@@ -75,21 +78,21 @@
             "Buttons8",
             "Buttons9"});
             this.chooseJoyStickButton.Name = "chooseJoyStickButton";
-            this.chooseJoyStickButton.Size = new System.Drawing.Size(200, 49);
+            this.chooseJoyStickButton.Size = new System.Drawing.Size(200, 28);
             this.chooseJoyStickButton.SelectedIndexChanged += new System.EventHandler(this.chooseJoyStickButton_SelectedIndexChanged);
             // 
             // teachToolStripMenuItem1
             // 
             this.teachToolStripMenuItem1.CheckOnClick = true;
             this.teachToolStripMenuItem1.Name = "teachToolStripMenuItem1";
-            this.teachToolStripMenuItem1.Size = new System.Drawing.Size(360, 48);
+            this.teachToolStripMenuItem1.Size = new System.Drawing.Size(260, 24);
             this.teachToolStripMenuItem1.Text = "Teach";
             this.teachToolStripMenuItem1.Click += new System.EventHandler(this.TeachToolStripMenuItem1_Click);
             // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(360, 48);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(260, 24);
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -103,15 +106,35 @@
             this.playToolStripMenuItem.Name = "playToolStripMenuItem";
             this.playToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
+            // splashTimer
+            // 
+            this.splashTimer.Enabled = true;
+            this.splashTimer.Tick += new System.EventHandler(this.splashTimer_Tick);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(-3, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(350, 360);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(292, 0);
+            this.ClientSize = new System.Drawing.Size(350, 350);
+            this.Controls.Add(this.pictureBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(350, 350);
             this.Name = "Form1";
-            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMenuStrip1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -124,5 +147,7 @@
         private ToolStripMenuItem teachToolStripMenuItem1;
         private ToolStripMenuItem quitToolStripMenuItem;
         private ToolStripComboBox chooseJoyStickButton;
+        private System.Windows.Forms.Timer splashTimer;
+        private PictureBox pictureBox1;
     }
 }

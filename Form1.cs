@@ -50,10 +50,13 @@ namespace MousePos
 
         private IntPtr beam;
 
+        private int splashCounter = 0;
+
         private JoystickOffset joystickOffset;
         public Form1()
         {
             InitializeComponent();
+            splashTimer.Start();
             var homePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             configurationFile = Path.Combine(homePath, "AutomotiveDiag\\config.json");
             Directory.CreateDirectory(Path.Combine(homePath, "AutomotiveDiag"));
@@ -107,6 +110,11 @@ namespace MousePos
         }
 
         private void Form1_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void Minimize()
         {
             this.ShowInTaskbar = false;
             notifyIcon1.Visible = true;
@@ -208,6 +216,16 @@ namespace MousePos
             catch (ArgumentException)
             {
                 Application.Exit();
+            }
+        }
+
+        private void splashTimer_Tick(object sender, EventArgs e)
+        {
+            splashCounter += 1;
+
+            if (splashCounter > 30)
+            {
+                Minimize();
             }
         }
     }
