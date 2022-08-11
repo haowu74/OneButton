@@ -55,8 +55,8 @@ namespace MousePos
         {
             InitializeComponent();
             var homePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            configurationFile = Path.Combine(homePath, "AutomativeDiag\\config.json");
-            Directory.CreateDirectory(Path.Combine(homePath, "AutomativeDiag"));
+            configurationFile = Path.Combine(homePath, "AutomotiveDiag\\config.json");
+            Directory.CreateDirectory(Path.Combine(homePath, "AutomotiveDiag"));
             LoadPosition(out int X, out int Y, out joystickOffset);
             chooseJoyStickButton.SelectedIndex = chooseJoyStickButton.Items.IndexOf(joystickOffset.ToString());
             mousePos.X = X;
