@@ -58,8 +58,8 @@ namespace MousePos
             InitializeComponent();
             splashTimer.Start();
             var homePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            configurationFile = Path.Combine(homePath, "AutomotiveDiag\\config.json");
-            Directory.CreateDirectory(Path.Combine(homePath, "AutomotiveDiag"));
+            configurationFile = Path.Combine(homePath, "AutomotiveDiag\\FrameFreeze\\config.json");
+            Directory.CreateDirectory(Path.Combine(homePath, "AutomotiveDiag\\FrameFreeze"));
             LoadPosition(out int X, out int Y, out joystickOffset);
             chooseJoyStickButton.SelectedIndex = chooseJoyStickButton.Items.IndexOf(joystickOffset.ToString());
             mousePos.X = X;

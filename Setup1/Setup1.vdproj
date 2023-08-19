@@ -184,7 +184,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:FrameFreeze"
         "ProductCode" = "8:{6F8D8A1E-DAC6-4746-A075-D1C3C17E21B3}"
-        "PackageCode" = "8:{5B55AA9C-8DD0-427C-8309-BF9BE50C22A1}"
+        "PackageCode" = "8:{483F6474-E07A-421C-BA17-E4FBC4A54822}"
         "UpgradeCode" = "8:{EE003850-8A8E-425C-BC1A-33F0D29AF0F7}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -315,7 +315,7 @@
             "Target" = "8:_E650853960FA4B7F882000E2D601D70C"
             "Folder" = "8:_3302D52A71164BE083C5A167EB01CE64"
             "WorkingFolder" = "8:_25A680F1DEA14D3DAE76112D86312F6B"
-            "Icon" = "8:"
+            "Icon" = "8:_443D887F4984418DBE97A78ACC79C3BC"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_89C3F2F46F38487EB40B68E95FDD423A"
@@ -329,7 +329,7 @@
             "Target" = "8:_E650853960FA4B7F882000E2D601D70C"
             "Folder" = "8:_0024C9C3287B4AB9B633E3BBC5F05BA0"
             "WorkingFolder" = "8:_25A680F1DEA14D3DAE76112D86312F6B"
-            "Icon" = "8:"
+            "Icon" = "8:_443D887F4984418DBE97A78ACC79C3BC"
             "Feature" = "8:"
             }
         }
