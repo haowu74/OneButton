@@ -5,6 +5,8 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrameFreeze", "FrameFreeze.csproj", "{B230BE0D-D549-4A47-907E-970A4459923B}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup1\Setup1.vdproj", "{5DB11421-61CF-4CB9-9D77-DBB2917CB930}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{B230BE0D-D549-4A47-907E-970A4459923B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B230BE0D-D549-4A47-907E-970A4459923B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B230BE0D-D549-4A47-907E-970A4459923B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DB11421-61CF-4CB9-9D77-DBB2917CB930}.Debug|Any CPU.ActiveCfg = Debug
+		{5DB11421-61CF-4CB9-9D77-DBB2917CB930}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
