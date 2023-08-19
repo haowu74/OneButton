@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OneButton", "OneButton.csproj", "{B230BE0D-D549-4A47-907E-970A4459923B}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "OneButtonSetup", "..\OneButtonSetup\OneButtonSetup.vdproj", "{AA9D6C27-17DC-4E64-B527-BA8B22A4BBE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrameFreeze", "FrameFreeze.csproj", "{B230BE0D-D549-4A47-907E-970A4459923B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,8 +15,6 @@ Global
 		{B230BE0D-D549-4A47-907E-970A4459923B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B230BE0D-D549-4A47-907E-970A4459923B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B230BE0D-D549-4A47-907E-970A4459923B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA9D6C27-17DC-4E64-B527-BA8B22A4BBE5}.Debug|Any CPU.ActiveCfg = Debug
-		{AA9D6C27-17DC-4E64-B527-BA8B22A4BBE5}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
