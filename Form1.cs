@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using SharpDX.DirectInput;
 using System.Runtime.InteropServices;
+using FrameFreeze.Properties;
 
 namespace MousePos
 {
@@ -122,10 +123,18 @@ namespace MousePos
                 foreach (var deviceInstance in directInput.GetDevices(DeviceType.Joystick,
                         DeviceEnumerationFlags.AllDevices))
                     joystickGuid = deviceInstance.InstanceGuid;
+
+            // Check COM Ports
+
+
             // If Joystick not found, exit the application
             if (joystickGuid == Guid.Empty)
             {
-                Application.Exit();
+                if (MessageBox.Show(Resources.JoyStick_Not_Found, Resources.Warning_Title, MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.OK)
+                {
+                    Application.Exit();
+                    return;
+                }
             }
             joystick = new Joystick(directInput, joystickGuid);
             joystick.Properties.BufferSize = 128;
