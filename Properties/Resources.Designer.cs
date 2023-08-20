@@ -61,8 +61,8 @@ namespace FrameFreeze.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Joystick is detected.
-        ///Quit the FrameFreeze application..
+        ///   Looks up a localized string similar to Frame Freeze device not detected.
+        ///Please check connections.
         /// </summary>
         internal static string JoyStick_Not_Found {
             get {

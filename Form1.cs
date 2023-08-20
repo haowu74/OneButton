@@ -118,13 +118,13 @@ namespace MousePos
                 DeviceEnumerationFlags.AllDevices))
                 joystickGuid = deviceInstance.InstanceGuid;
 
-            // If Gamepad not found, look for a Joystick
+            // If Game Pad not found, look for a Joystick
             if (joystickGuid == Guid.Empty)
                 foreach (var deviceInstance in directInput.GetDevices(DeviceType.Joystick,
                         DeviceEnumerationFlags.AllDevices))
                     joystickGuid = deviceInstance.InstanceGuid;
 
-            // Check COM Ports
+            // Look for a Joystick from COM Ports
 
 
             // If Joystick not found, exit the application
