@@ -147,6 +147,7 @@ namespace MousePos
         private void Minimize()
         {
             this.ShowInTaskbar = false;
+            this.Visible = false;
             notifyIcon1.Visible = true;
             this.WindowState = FormWindowState.Minimized;
         }
