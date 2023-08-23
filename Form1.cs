@@ -1,8 +1,8 @@
-
 using Newtonsoft.Json;
 using SharpDX.DirectInput;
 using System.Runtime.InteropServices;
 using FrameFreeze.Properties;
+using System.IO.Ports;
 
 namespace MousePos
 {
@@ -54,6 +54,9 @@ namespace MousePos
         private int splashCounter = 0;
 
         private JoystickOffset joystickOffset;
+
+        private SerialPort? port;
+
         public Form1()
         {
             InitializeComponent();
@@ -110,6 +113,53 @@ namespace MousePos
             });
         }
 
+        private void StartWaitingForClickFromOutsideOnSerial(SerialPort serialPort)
+        {
+            are.Reset();
+            var ctx = new SynchronizationContext();
+            var task = Task.Run(() =>
+            {
+                var prevCommand = "";
+                var command = "";
+                while (true)
+                {
+                    Thread.Sleep(50);
+                    var newCommand = serialPort.ReadLine();
+                    if (newCommand != "")
+                    {
+                        command = newCommand;
+                    }
+                    if (MouseButtons == MouseButtons.Left && teaching)
+                    {
+                        mousePos.X = MousePosition.X;
+                        mousePos.Y = MousePosition.Y;
+                        Invoke(new MethodInvoker(() => notifyIcon1.Text = $"({mousePos.X}, {mousePos.Y})"));
+                        SavePosition(mousePos.X, mousePos.Y);
+                        teaching = false;
+                        SetSystemCursor(arrow, 32512);
+                        SetSystemCursor(beam, 32513);
+                        this.Invoke(new MethodInvoker(() => teachToolStripMenuItem1.Checked = false));
+                    }
+                    else if (!teaching)
+                    {
+                        if (command == "59087\r" && prevCommand != "59087\r")
+                        {
+                            GetCursorPos(out Point point);
+                            oldPos = point;
+                            SetCursorPos(mousePos.X, mousePos.Y);
+                            mouse_event(2, mousePos.X, mousePos.Y, 0, 0);
+                        }
+                        else if (prevCommand == "59087\r")
+                        {
+                            mouse_event(4, mousePos.X, mousePos.Y, 0, 0);
+                            SetCursorPos(oldPos.X, oldPos.Y);
+                        }
+                        prevCommand = command;
+                    }
+                }
+            });
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             var directInput = new DirectInput();
@@ -125,6 +175,32 @@ namespace MousePos
                     joystickGuid = deviceInstance.InstanceGuid;
 
             // Look for a Joystick from COM Ports
+            var ports = SerialPort.GetPortNames();
+            var port = new SerialPort();
+            try
+            {
+                foreach (var portName in ports)
+                {
+                    port.PortName = portName;
+                    port.BaudRate = 9600;
+                    port.Open();
+                    port.ReadTimeout = 500;
+                    if (port.ReadLine() == "3322\r" || port.ReadLine() == "59087\r")
+                    {
+                        chooseJoyStickButton.Enabled = false;
+                        chooseJoyStickButton.Visible = false;
+                        this.port = port;
+                        StartWaitingForClickFromOutsideOnSerial(port);
+                        return;
+                    }
+
+                    port.Close();
+                }
+            }
+            catch
+            {
+                port.Close();
+            }
 
 
             // If Joystick not found, exit the application
@@ -212,6 +288,7 @@ namespace MousePos
         {
             SetSystemCursor(arrow, 32512);
             SetSystemCursor(beam, 32513);
+            this.port?.Close();
             Application.Exit();
         }
 
