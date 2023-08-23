@@ -57,6 +57,10 @@ namespace MousePos
 
         private SerialPort? port;
 
+        private readonly string triggerCommand = "59087\r";
+
+        private readonly string heartbeatCommand = "3322\r";
+
         public Form1()
         {
             InitializeComponent();
@@ -142,14 +146,14 @@ namespace MousePos
                     }
                     else if (!teaching)
                     {
-                        if (command == "59087\r" && prevCommand != "59087\r")
+                        if (command == triggerCommand && prevCommand != triggerCommand)
                         {
                             GetCursorPos(out Point point);
                             oldPos = point;
                             SetCursorPos(mousePos.X, mousePos.Y);
                             mouse_event(2, mousePos.X, mousePos.Y, 0, 0);
                         }
-                        else if (prevCommand == "59087\r")
+                        else if (prevCommand == triggerCommand)
                         {
                             mouse_event(4, mousePos.X, mousePos.Y, 0, 0);
                             SetCursorPos(oldPos.X, oldPos.Y);
@@ -185,7 +189,7 @@ namespace MousePos
                     port.BaudRate = 9600;
                     port.Open();
                     port.ReadTimeout = 500;
-                    if (port.ReadLine() == "3322\r" || port.ReadLine() == "59087\r")
+                    if (port.ReadLine() == heartbeatCommand || port.ReadLine() == triggerCommand)
                     {
                         chooseJoyStickButton.Enabled = false;
                         chooseJoyStickButton.Visible = false;
