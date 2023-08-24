@@ -55,7 +55,7 @@ namespace MousePos
 
         private JoystickOffset joystickOffset;
 
-        private SerialPort? port;
+        private SerialPort? serialPrt;
 
         private readonly string triggerCommand = "59087\r";
 
@@ -133,6 +133,7 @@ namespace MousePos
                     {
                         command = newCommand;
                     }
+
                     if (MouseButtons == MouseButtons.Left && teaching)
                     {
                         mousePos.X = MousePosition.X;
@@ -158,6 +159,7 @@ namespace MousePos
                             mouse_event(4, mousePos.X, mousePos.Y, 0, 0);
                             SetCursorPos(oldPos.X, oldPos.Y);
                         }
+
                         prevCommand = command;
                     }
                 }
@@ -181,29 +183,32 @@ namespace MousePos
             // Look for a Joystick from COM Ports
             var ports = SerialPort.GetPortNames();
             var port = new SerialPort();
-            try
+            foreach (var portName in ports)
             {
-                foreach (var portName in ports)
+                port.PortName = portName;
+                port.BaudRate = 9600;
+                port.ReadTimeout = 2000;
+                if (port.IsOpen)
                 {
-                    port.PortName = portName;
-                    port.BaudRate = 9600;
-                    port.Open();
-                    port.ReadTimeout = 500;
+                    port.Close();
+                }
+                port.Open();
+                port.DiscardInBuffer();
+                try
+                {
                     if (port.ReadLine() == heartbeatCommand || port.ReadLine() == triggerCommand)
                     {
                         chooseJoyStickButton.Enabled = false;
                         chooseJoyStickButton.Visible = false;
-                        this.port = port;
+                        this.serialPrt = port;
                         StartWaitingForClickFromOutsideOnSerial(port);
                         return;
                     }
-
+                }
+                catch (Exception ex)
+                {
                     port.Close();
                 }
-            }
-            catch
-            {
-                port.Close();
             }
 
 
@@ -292,7 +297,7 @@ namespace MousePos
         {
             SetSystemCursor(arrow, 32512);
             SetSystemCursor(beam, 32513);
-            this.port?.Close();
+            this.serialPrt?.Close();
             Application.Exit();
         }
 
