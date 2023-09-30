@@ -1,7 +1,8 @@
-
 using Newtonsoft.Json;
 using SharpDX.DirectInput;
 using System.Runtime.InteropServices;
+using FrameFreeze.Properties;
+using System.IO.Ports;
 
 namespace MousePos
 {
@@ -53,6 +54,13 @@ namespace MousePos
         private int splashCounter = 0;
 
         private JoystickOffset joystickOffset;
+
+        private SerialPort? serialPrt;
+
+        private readonly string triggerCommand = "59087\r";
+
+        private readonly string heartbeatCommand = "3322\r";
+
         public Form1()
         {
             InitializeComponent();
@@ -109,6 +117,55 @@ namespace MousePos
             });
         }
 
+        private void StartWaitingForClickFromOutsideOnSerial(SerialPort serialPort)
+        {
+            are.Reset();
+            var ctx = new SynchronizationContext();
+            var task = Task.Run(() =>
+            {
+                var prevCommand = "";
+                var command = "";
+                while (true)
+                {
+                    Thread.Sleep(50);
+                    var newCommand = serialPort.ReadLine();
+                    if (newCommand != "")
+                    {
+                        command = newCommand;
+                    }
+
+                    if (MouseButtons == MouseButtons.Left && teaching)
+                    {
+                        mousePos.X = MousePosition.X;
+                        mousePos.Y = MousePosition.Y;
+                        Invoke(new MethodInvoker(() => notifyIcon1.Text = $"({mousePos.X}, {mousePos.Y})"));
+                        SavePosition(mousePos.X, mousePos.Y);
+                        teaching = false;
+                        SetSystemCursor(arrow, 32512);
+                        SetSystemCursor(beam, 32513);
+                        this.Invoke(new MethodInvoker(() => teachToolStripMenuItem1.Checked = false));
+                    }
+                    else if (!teaching)
+                    {
+                        if (command == triggerCommand && prevCommand != triggerCommand)
+                        {
+                            GetCursorPos(out Point point);
+                            oldPos = point;
+                            SetCursorPos(mousePos.X, mousePos.Y);
+                            mouse_event(2, mousePos.X, mousePos.Y, 0, 0);
+                        }
+                        else if (prevCommand == triggerCommand)
+                        {
+                            mouse_event(4, mousePos.X, mousePos.Y, 0, 0);
+                            SetCursorPos(oldPos.X, oldPos.Y);
+                        }
+
+                        prevCommand = command;
+                    }
+                }
+            });
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             var directInput = new DirectInput();
@@ -117,15 +174,52 @@ namespace MousePos
                 DeviceEnumerationFlags.AllDevices))
                 joystickGuid = deviceInstance.InstanceGuid;
 
-            // If Gamepad not found, look for a Joystick
+            // If Game Pad not found, look for a Joystick
             if (joystickGuid == Guid.Empty)
                 foreach (var deviceInstance in directInput.GetDevices(DeviceType.Joystick,
                         DeviceEnumerationFlags.AllDevices))
                     joystickGuid = deviceInstance.InstanceGuid;
+
+            // Look for a Joystick from COM Ports
+            var ports = SerialPort.GetPortNames();
+            var port = new SerialPort();
+            foreach (var portName in ports)
+            {
+                port.PortName = portName;
+                port.BaudRate = 9600;
+                port.ReadTimeout = 2000;
+                if (port.IsOpen)
+                {
+                    port.Close();
+                }
+                port.Open();
+                port.DiscardInBuffer();
+                try
+                {
+                    if (port.ReadLine() == heartbeatCommand || port.ReadLine() == triggerCommand)
+                    {
+                        chooseJoyStickButton.Enabled = false;
+                        chooseJoyStickButton.Visible = false;
+                        this.serialPrt = port;
+                        StartWaitingForClickFromOutsideOnSerial(port);
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    port.Close();
+                }
+            }
+
+
             // If Joystick not found, exit the application
             if (joystickGuid == Guid.Empty)
             {
-                Application.Exit();
+                if (MessageBox.Show(Resources.JoyStick_Not_Found, Resources.Warning_Title, MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.OK)
+                {
+                    Application.Exit();
+                    return;
+                }
             }
             joystick = new Joystick(directInput, joystickGuid);
             joystick.Properties.BufferSize = 128;
@@ -138,6 +232,7 @@ namespace MousePos
         private void Minimize()
         {
             this.ShowInTaskbar = false;
+            this.Visible = false;
             notifyIcon1.Visible = true;
             this.WindowState = FormWindowState.Minimized;
         }
@@ -202,6 +297,7 @@ namespace MousePos
         {
             SetSystemCursor(arrow, 32512);
             SetSystemCursor(beam, 32513);
+            this.serialPrt?.Close();
             Application.Exit();
         }
 

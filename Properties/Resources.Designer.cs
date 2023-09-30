@@ -59,5 +59,24 @@ namespace FrameFreeze.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frame Freeze device not detected.
+        ///Please check connections.
+        /// </summary>
+        internal static string JoyStick_Not_Found {
+            get {
+                return ResourceManager.GetString("JoyStick_Not_Found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        internal static string Warning_Title {
+            get {
+                return ResourceManager.GetString("Warning_Title", resourceCulture);
+            }
+        }
     }
 }
